@@ -1,6 +1,12 @@
 package com.icodeap._proyectospring.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "autores")
 public class Autor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String apellido;
