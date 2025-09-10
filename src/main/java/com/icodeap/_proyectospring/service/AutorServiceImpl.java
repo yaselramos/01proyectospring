@@ -3,10 +3,11 @@ package com.icodeap._proyectospring.service;
 import com.icodeap._proyectospring.model.Autor;
 import com.icodeap._proyectospring.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class AutorServiceImpl implements AutorService{
     @Autowired
     private AutorRepository autorRepository;
