@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
-public class AutorServiceImpl implements AutorService{
+public class AutorServiceImpl implements AutorService {
     @Autowired
     private AutorRepository autorRepository;
 
@@ -18,8 +19,8 @@ public class AutorServiceImpl implements AutorService{
     }
 
     @Override
-    public Autor findById(Long id) {
-        return autorRepository.findById(id).orElseThrow();
+    public Optional<Autor> findById(Long id) {
+        return autorRepository.findById(id);
     }
 
     @Override
@@ -28,15 +29,17 @@ public class AutorServiceImpl implements AutorService{
     }
 
     @Override
-    public Autor update(Long id, Autor autor) {
-        Optional<Autor> autorbd=autorRepository.findById(id);
-        if(autorbd.isPresent()){
-            autorbd.orElseThrow().setApellido(autor.getApellido());
-            autorbd.orElseThrow().setNombre(autor.getNombre());
-            autorbd.orElseThrow().setPhone(autor.getPhone());
-            return autorRepository.save(autor);
-        }
-        return null;
+    public Optional<Autor> update(Long id, Autor autor) {
+        return autorRepository.findById(id).map(autor1 ->
+                {
+                    autor1.setApellido(autor.getApellido());
+                    autor1.setNombre(autor.getNombre());
+                    autor1.setPhone(autor.getPhone());
+                    return autorRepository.save(autor1);
+                }
+        );
+
+
     }
 
     @Override

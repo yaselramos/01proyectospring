@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/autores")
@@ -20,24 +21,33 @@ public class AutorControllerBD {
     public ResponseEntity<List<Autor>> getAllAutores() {
         return ResponseEntity.ok(autorService.findAll());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Autor> getAutorById(@PathVariable Long id) {
-        Autor autor = autorService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(autor);
-    }
-    @PostMapping
-    public ResponseEntity<Autor> createAutor(@RequestBody Autor autor) {
-          autorService.save(autor);
-        return new ResponseEntity<>(autor, HttpStatus.CREATED);
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Autor> updateAutor(@PathVariable Long id, @RequestBody Autor autor) {
-        Autor updatedAutor = autorService.update(id, autor);
-        if (updatedAutor == null) {
+        Optional<Autor> autor = autorService.findById(id);
+        if (autor.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(autor.orElseThrow());
+        } else {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(updatedAutor);
+     //   return autor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PostMapping
+    public ResponseEntity<Autor> createAutor(@RequestBody Autor autor) {
+        autorService.save(autor);
+        return new ResponseEntity<>(autor, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Autor> updateAutor(@PathVariable Long id, @RequestBody Autor autor) {
+        Optional<Autor> updatedAutor = autorService.update(id, autor);
+        if (updatedAutor.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedAutor.orElseThrow());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAutor(@PathVariable Long id) {
         autorService.deleteById(id);

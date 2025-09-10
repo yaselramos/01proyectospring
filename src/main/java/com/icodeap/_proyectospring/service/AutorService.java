@@ -3,12 +3,13 @@ package com.icodeap._proyectospring.service;
 import com.icodeap._proyectospring.model.Autor;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AutorService {
 
     Autor save(Autor autor);
-    Autor findById(Long id);
+    Optional<Autor> findById(Long id);
     void deleteById(Long id);
-    Autor update(Long id,Autor autor);
+    Optional<Autor> update(Long id,Autor autor);
     List<Autor> findAll();
 }
