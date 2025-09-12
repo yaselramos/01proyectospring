@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface AutorService {
 
-    Autor save(Autor autor);
-    Optional<Autor> findById(Long id);
+    AutorDTO save(AutorDTO autor);
+    AutorDTO findById(Long id);
     void deleteById(Long id);
-    Optional<Autor> update(Long id,Autor autor);
-    List<Autor> findAll();
+    AutorDTO update(Long id,AutorDTO autor);
+    List<AutorDTO> findAll();
 }
